@@ -100,18 +100,14 @@ _real_start:
 	sti ;env should be setup now 
 	
 	;;
-	; TODO we should set GS as an arg for read disk as we need to set it here 
-	;anyway 
-	;;
-
+	push 0x1000 
+	pop gs
 	mov cx,word[stage2_size]
-	mov ebx,0x10000000
+	xor bx,bx
 	mov eax,dword[stage2_lba]
 	mov ebp,dword[stage2_lba+4]
 	call _read_disk
 
-	push 0x1000 
-	pop gs
 	mov al,'7'
 	;Check stage 2 has a valid signature. useful cases were stage2 
 	;is improperly installed/was deleted by another bootloader for 
@@ -119,7 +115,7 @@ _real_start:
 	cmp word[gs:0x01fe],0xaa55
 	jne _errors
 
-	jmp gs:0x0000
+	jmp 0x1000:0x0000
 ;;SO if an error happens here it isn't great. 
 ;;As we can't really afford to go using bytes for
 ;;Strings so we are going to use error numbers
@@ -146,7 +142,11 @@ _hlt_endless:
 ; EBX = 32bit high LBA
 ; CX = Stage 2 size  
 ; DL = disk no
-; EBX(0-15) = disk buffer offset 
+; BX = disk buffer offset 
+; GS = disk buffer segment
+;;
+
+;; OLD IGNORE DO NOT USE
 ; EBX(16-32) = disk buffer segment 
 ; High EBX bytes are in typical real mode segment fashion
 ; ie 0x1000 * 16 + 0ffset
@@ -159,7 +159,8 @@ _read_disk:
 	.setup_dap:
 	mov word[dap.size],0x0010
 	mov word[dap.sectors],0x01 ;read one sector at a time to work around buggy bios's 
-	mov dword[dap.transfer_buffer],ebx
+	mov word[dap.offset],bx 
+	mov word[dap.segment],gs
 	mov dword[dap.low_lba],eax
 	mov dword[dap.high_lba],ebp
 	push dx ;save drive number for upcomming division 
