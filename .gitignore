@@ -1,0 +1,8 @@
+*.o
+*.so
+*.bin
+*.img
+*.elf
+*.exe
+*.efi
+
