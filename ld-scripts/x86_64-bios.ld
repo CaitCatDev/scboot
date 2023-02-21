@@ -1,6 +1,6 @@
 ENTRY(_start)
 OUTPUT_FORMAT(elf64-x86-64) 
-INPUT(stage2.o)
+INPUT(start.o)
 
 OUTPUT(stage2.elf)
 

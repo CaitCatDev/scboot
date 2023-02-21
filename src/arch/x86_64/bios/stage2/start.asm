@@ -29,6 +29,23 @@ _rm_halt_loop:
 	jmp _rm_halt_loop
 
 
+_gdt:
+	.null: 
+	dq 0x00 
+	.code16:
+
+	.data16:
+
+	.code32:
+
+	.data32:
+
+	.code64:
+
+	.data64:
+
+.end
+
 times 510 - ($ - $$) db 0x00 
 dw 0xaa55 ;Same as BIOS MAGIC 
 
