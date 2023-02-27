@@ -229,7 +229,7 @@ _read_disk:
 
 times 430 - ($ - $$) db 0x00;pad to have variables place at abs address
 stage2_lba: dq 0x01 ;Default is 1 
-stage2_size: dw 0x200 ;Default read 1 sector 
+stage2_size: dw 0x400 ;Default read 1 sector 
 times 440 - ($ - $$) db 0x00 ;End of BIOS code 
 times 510 - ($ - $$) db 0x00 
 

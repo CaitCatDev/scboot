@@ -24,7 +24,7 @@ verbose:
 bios.img: all
 	dd if=/dev/zero of=$@ bs=512 count=102400
 	dd if=$(S1_TARGET) bs=512 count=1 seek=0 conv=notrunc of=$@
-	dd if=$(S2_TARGET) count=1 seek=1 conv=notrunc of=$@
+	dd if=$(S2_TARGET) seek=1 conv=notrunc of=$@
 
 biostest: bios.img
 	${VM} ${VM_ARGS} -hda bios.img
