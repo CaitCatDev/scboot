@@ -16,6 +16,7 @@ section .rm_text ;Real Mode Text section
 global _start
 extern _scboot_bss_start
 extern _scboot_bss_end
+extern scboot_main
 
 _start:
 	mov ax,0x1000 
@@ -148,7 +149,7 @@ check_l5page:
 setup_paging:
 	call check_l5page
 	
-	mov ecx,0x3 
+	mov ecx,0x2  
 	mov edi,PML4_start
 	mov esi,PDP 
 
@@ -170,6 +171,7 @@ setup_paging:
 	loop .fill_page_tables
 
 	and esi,0x3 ;Keep only these bits  
+	or esi,0x83
 	mov ecx,512
 	
 	;;
@@ -217,6 +219,7 @@ setup_paging:
 	mov cr0,eax
 	ret
 
+
 [bits 64] 
 section .text
 init_lmode:
@@ -232,6 +235,8 @@ init_lmode:
     mov rax, 0x1F201F201F201F20 
     mov ecx, 500 
     rep stosq
+	
+	call scboot_main
 
 _hlt_loop64:
 	cli 
