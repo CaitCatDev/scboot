@@ -10,16 +10,12 @@ VM_ARGS=-d int --no-reboot
 S1_TARGET=mbr.bin
 
 S2_TARGET=stage2.bin
-S2_OBJS=start.o
+S2_OBJS=start.o main.o 
 
 .PHONY: biostest clean
 
 all: ${S1_TARGET} ${S2_TARGET}
 
-
-verbose:
-	echo ${S2_SRC}
-	echo ${S2_OBJ}
 
 bios.img: all
 	dd if=/dev/zero of=$@ bs=512 count=102400
@@ -40,6 +36,9 @@ stage2.elf: $(S2_OBJS)
 
 start.o: src/arch/x86_64/bios/stage2/start.asm
 	$(ASM) -felf64 src/arch/x86_64/bios/stage2/start.asm -o $@ 
+
+main.o: src/arch/x86_64/bios/stage2/main.c 
+	$(CC) -c src/arch/x86_64/bios/stage2/main.c -o $@
 
 clean:
 	rm *.bin *.o *.img *.elf
