@@ -20,10 +20,10 @@ SECTIONS {
 		*(.rodata*)
 	}
 
-	.bss : {
-		_BSS_START = .;
+	.bss : ALIGN(0x10000) {
+		_scboot_bss_start = .;
 		*(.bss)
-		_BSS_END = .;
+		_scboot_bss_end = .;
 	}
 
 }
