@@ -10,7 +10,7 @@ VM_ARGS=-d int --no-reboot
 S1_TARGET=mbr.bin
 
 S2_TARGET=stage2.bin
-S2_OBJS=start.o main.o 
+S2_OBJS=start.o main.o x86_int.o  
 
 .PHONY: biostest clean
 
@@ -39,6 +39,9 @@ start.o: src/arch/x86_64/bios/stage2/start.asm
 
 main.o: src/arch/x86_64/bios/stage2/main.c 
 	$(CC) -c src/arch/x86_64/bios/stage2/main.c -o $@
+
+x86_int.o: src/arch/x86_64/bios/stage2/x86_int.asm 
+	$(ASM) -felf64 src/arch/x86_64/bios/stage2/x86_int.asm -o $@
 
 clean:
 	rm *.bin *.o *.img *.elf

@@ -5,6 +5,8 @@
 static volatile char *VGA_TXT_MODE_MEM = (void*)0xb8000;
 static int pos = 0;
 
+void x86int_64();
+
 void put(char c) {
 	*(VGA_TXT_MODE_MEM + pos) = c;
 	pos += 2;
@@ -19,6 +21,6 @@ void puts(char *str) {
 
 int scboot_main() {
 	puts("Personally It's nice to be back in C");
-	
+	x86int_64();
 	return 0;
 }
