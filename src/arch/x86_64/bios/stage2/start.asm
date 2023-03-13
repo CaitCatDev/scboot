@@ -236,6 +236,8 @@ init_lmode:
     mov ecx, 500 
     rep stosq
 	
+	xor rbp,rbp
+
 	call scboot_main
 
 _hlt_loop64:
